@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost/yellow
+    username: postgres
+    password: test
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  redis:
+    host: localhost
+    port: 6379
+
+kafka:
+  topic:
+    event: events
+    market: markets
+  bootstrap-servers: localhost:9092
+  consumer:
+    group-id: yellow
+
+springdoc:
+  api-docs:
+    path: /api-docs

@@ -1,0 +1,160 @@
+openapi: 3.0.3
+info:
+  title: API Specification for Yellow team
+  version: 1.0-SNAPSHOT
+servers:
+  - url: localhost:8080
+tags:
+  - name: event
+    description: |-
+      Deliver events with their belonging event markets and event market outcomes
+  - name: market
+    description: |-
+      Deliver market with their belonging market outcomes
+paths:
+  /event:
+    get:
+      tags:
+        - event
+      summary: Get event information
+      operationId: getEventsList
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Events'
+  /event/filter:
+    get:
+      tags:
+        - event
+      summary: Filter upcoming events by their start date
+      operationId: filterEvents
+      parameters:
+        - name: start_date
+          in: query
+          description: Start date for filtering events
+          required: true
+          schema:
+            type: string
+            example: "2023-08-15"
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Events'
+
+  /market:
+    get:
+      tags:
+        - market
+      summary: Get markets information
+      operationId: getMarketList
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Markets'
+
+components:
+  schemas:
+    EventMarketOutcome:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1-1-1"
+        outcomeId:
+          type: string
+          example: "3way-1"
+        status:
+          type: integer
+          example: 0
+        odds:
+          type: number
+          format: double
+          example: 2.1
+
+    EventMarket:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1-1"
+        marketId:
+          type: string
+          example: "3way"
+        status:
+          type: integer
+          example: 1
+        outcomes:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventMarketOutcome"
+
+    Event:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1"
+        name:
+          type: string
+          example: "Real - Barcelona"
+        startsAt:
+          type: string
+          example: "2032-05-01T20:00:00"
+          pattern: '^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$'
+
+        status:
+          type: integer
+          example: 1
+        markets:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventMarket"
+
+    Events:
+      type: array
+      items:
+        $ref: "#/components/schemas/Event"
+
+    MarketOutcome:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "3way-1"
+        name:
+          type: string
+          example: "1"
+        status:
+          type: integer
+          example: 1
+
+    Market:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "3way"
+        name:
+          type: string
+          example: "3 way"
+        status:
+          type: integer
+          example: 1
+        outcomes:
+          type: array
+          items:
+            $ref: "#/components/schemas/MarketOutcome"
+
+    Markets:
+      type: array
+      items:
+        $ref: "#/components/schemas/Market"
