@@ -35,7 +35,7 @@ When the project is up and running first you can visit http://localhost:8080/swa
 
 Initial state is loaded when the project is started, there is already some data.
 
-Since Apache Kafka is used as stream implementation one can send Kafka messages (JSON format) over the command line (kafka-console-producer) on two topics `event` and `market`.
+Since Apache Kafka is used as stream implementation one can send Kafka messages (JSON format) over the command line (kafka-console-producer) on two topics `events` and `markets`.
 ```bash
 ./kafka-console-producer.sh --broker-list localhost:9092 --topic markets
 ```
