@@ -14,7 +14,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -39,7 +38,7 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
     private MarketRedisRepository marketRedisRepository;
 
     @Override
-    @KafkaListener(topicPartitions = @TopicPartition(topic = "${kafka.topic.event}", partitions = { "0", "1" }), containerFactory = "eventKafkaListenerContainerFactory")
+    @KafkaListener(topics = "${kafka.topic.event}", groupId = "${kafka.consumer.group-id}", containerFactory = "eventKafkaListenerContainerFactory", concurrency = "2")
     public void consumeEvents(EventRedis event) {
         Optional<EventRedis> eventRedisOptional = eventRedisRepository.findById(event.getId());
         if (eventRedisOptional.isEmpty()) {
